@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Science Saviors RPG</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+    }
+    .title {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    .character-select, .realms {
+      margin-top: 40px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 12px;
+    }
+    .btn {
+      padding: 10px 20px;
+      margin: 10px;
+      background: #3498db;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <div class="title">🧪 Science Saviors RPG</div>
+  <div class="character-select">
+    <h2>Select Your Character</h2>
+    <button class="btn" onclick="selectCharacter('Arjun the Physicist')">Arjun the Physicist ⚡</button>
+    <button class="btn" onclick="selectCharacter('Nina the Chemist')">Nina the Chemist 🔥</button>
+    <button class="btn" onclick="selectCharacter('Veer the Biologist')">Veer the Biologist 🌱</button>
+  </div>
+  <div class="realms" style="display:none;" id="realmBox">
+    <h2 id="charName">Welcome, Hero!</h2>
+    <p>Choose your Realm of Study:</p>
+    <button class="btn">⚡ Physics Realm</button>
+    <button class="btn">🔥 Chemistry Realm</button>
+    <button class="btn">🌱 Biology Realm</button>
+  </div>
+
+  <script>
+    function selectCharacter(name) {
+      document.getElementById('realmBox').style.display = 'block';
+      document.getElementById('charName').innerText = 'Welcome, ' + name + '!';
+    }
+  </script>
+</body>
+</html>
