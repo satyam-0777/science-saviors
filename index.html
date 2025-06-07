@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Science Saviors RPG</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://wallpapercave.com/wp/wp10335927.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+    }
+    .title {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      color: #f1c40f;
+      text-shadow: 2px 2px 5px #000;
+    }
+    .container {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 800px;
+      margin: auto;
+    }
+    .btn {
+      padding: 10px 20px;
+      margin: 10px;
+      background: #3498db;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #2980b9;
+    }
+    .question {
+      margin: 20px 0;
+    }
+    audio {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="title">🧪 Science Saviors RPG: Class 10 Adventure</div>
+
+  <div class="container">
+    <h2>Select Your Character</h2>
+    <button class="btn" onclick="startGame('Arjun the Physicist')">Arjun the Physicist ⚡</button>
+    <button class="btn" onclick="startGame('Nina the Chemist')">Nina the Chemist 🔥</button>
+    <button class="btn" onclick="startGame('Veer the Biologist')">Veer the Biologist 🌱</button>
+
+    <div id="quizSection" style="display:none">
+      <h2 id="characterTitle"></h2>
+      <div class="question" id="questionBox"></div>
+      <div id="optionsBox"></div>
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <audio autoplay loop>
+    <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Podington_Bear/Passages/Podington_Bear_-_Starling.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const questions = [
+      {
+        q: "What is the unit of electric current?",
+        options: ["Volt", "Ampere", "Ohm", "Watt"],
+        answer: "Ampere"
+      },
+      {
+        q: "Which acid is found in vinegar?",
+        options: ["Acetic acid", "Citric acid", "Sulfuric acid", "Hydrochloric acid"],
+        answer: "Acetic acid"
+      },
+      {
+        q: "Which process releases energy in cells?",
+        options: ["Respiration", "Photosynthesis", "Digestion", "Transpiration"],
+        answer: "Respiration"
+      }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+
+    function startGame(charName) {
+      document.getElementById("characterTitle").innerText = `Welcome, ${charName}`;
+      document.getElementById("quizSection").style.display = 'block';
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = questions[currentQ];
+      document.getElementById("questionBox").innerText = q.q;
+      const optionsHTML = q.options.map(opt => `
+        <button class='btn' onclick="checkAnswer('${opt}')">${opt}</button>
+      `).join('');
+      document.getElementById("optionsBox").innerHTML = optionsHTML;
+      document.getElementById("result").innerText = '';
+    }
+
+    function checkAnswer(selected) {
+      const correct = questions[currentQ].answer;
+      const resultBox = document.getElementById("result");
+      if (selected === correct) {
+        score++;
+        resultBox.innerText = "✅ Correct!";
+      } else {
+        resultBox.innerText = `❌ Wrong! Correct answer is: ${correct}`;
+      }
+
+      currentQ++;
+      if (currentQ < questions.length) {
+        setTimeout(showQuestion, 1500);
+      } else {
+        setTimeout(() => {
+          document.getElementById("questionBox").innerText = `Quiz Over! You scored ${score}/${questions.length}`;
+          document.getElementById("optionsBox").innerHTML = '';
+          resultBox.innerText = '';
+        }, 1500);
+      }
+    }
+  </script>
+</body>
+</html>
