@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChampLearn - AI Quiz</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="firebase-config.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to ChampLearn</h1>
+    <div id="auth-section">
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="signup()">Sign Up</button>
+      <button onclick="login()">Login</button>
+    </div>
+    <div id="quiz-section" style="display:none;">
+      <h2>Hello, <span id="user-name"></span>!</h2>
+      <p>Select a subject:</p>
+      <button onclick="selectSubject('Math')">Math</button>
+      <button onclick="selectSubject('Science')">Science</button>
+      <button onclick="selectSubject('SST')">SST</button>
+    </div>
+  </div>
+  <script src="app.js" type="module"></script>
+</body>
+</html>
