@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ChampLearn Quiz</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
+      color: #333;
+      padding: 30px;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      max-width: 800px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #00796b;
+    }
+    select, button {
+      font-size: 16px;
+      padding: 10px;
+      margin: 10px;
+      width: 200px;
+    }
+    .question {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .question.correct {
+      background-color: #c8e6c9;
+    }
+    .question.wrong {
+      background-color: #ffcdd2;
+    }
+    .question p {
+      margin: 10px 0 5px;
+    }
+  </style>
+  <script>
+    const questionsDB = {
+      Math: {
+        "Real Numbers": Array.from({ length: 20 }, (_, i) => ({
+          q: "Math Q" + (i + 1) + ": What is " + (i + 1) + " + " + (i + 2) + "?",
+          options: ["2", "3", "5", (i + 1 + i + 2).toString()],
+          answer: (i + 1 + i + 2).toString()
+        }))
+      },
+      Science: {
+        "Life Processes": Array.from({ length: 20 }, (_, i) => ({
+          q: "Science Q" + (i + 1) + ": Which organ is part of life process?",
+          options: ["Lungs", "Brain", "Heart", "Skin"],
+          answer: "Heart"
+        }))
+      }
+    };
+
+    let currentQuestions = [];
+    let score = 0;
+
+    function loadChapters() {
+      const subject = document.getElementById("subject").value;
+      const chapterSelect = document.getElementById("chapter");
+      chapterSelect.innerHTML = "";
+      for (let chapter in questionsDB[subject]) {
+        const option = document.createElement("option");
+        option.value = chapter;
+        option.text = chapter;
+        chapterSelect.appendChild(option);
+      }
+    }
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function loadQuiz() {
+      score = 0;
+      const subject = document.getElementById("subject").value;
+      const chapter = document.getElementById("chapter").value;
+      const quizArea = document.getElementById("quizArea");
+      quizArea.innerHTML = "";
+      let allQuestions = questionsDB[subject][chapter];
+      currentQuestions = shuffle(allQuestions).slice(0, 15);
+
+      currentQuestions.forEach((item, idx) => {
+        const div = document.createElement("div");
+        div.className = "question";
+        div.innerHTML = `<p><strong>${idx + 1}. ${item.q}</strong></p>` +
+          item.options.map(opt => `<label><input type="radio" name="q${idx}" value="${opt}" /> ${opt}</label><br>`).join("");
+        quizArea.appendChild(div);
+      });
+
+      quizArea.innerHTML += `<br><button onclick="submitQuiz()">Submit Quiz</button>`;
+    }
+
+    function submitQuiz() {
+      const quizArea = document.getElementById("quizArea");
+      let questions = quizArea.querySelectorAll(".question");
+      currentQuestions.forEach((item, idx) => {
+        const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+        const qDiv = questions[idx];
+        if (selected && selected.value === item.answer) {
+          score++;
+          qDiv.classList.add("correct");
+        } else {
+          qDiv.classList.add("wrong");
+          const explain = document.createElement("p");
+          explain.innerHTML = `<em>Correct Answer: ${item.answer}</em>`;
+          qDiv.appendChild(explain);
+        }
+      });
+      quizArea.innerHTML += `<h3>Your Score: ${score} / ${currentQuestions.length}</h3>
+      <button onclick="loadQuiz()">Retry This Quiz</button>`;
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>ChampLearn Quiz</h1>
+    <p>Select a subject and chapter:</p>
+    <select id="subject" onchange="loadChapters()">
+      <option value="Math">Math</option>
+      <option value="Science">Science</option>
+    </select>
+    <select id="chapter"></select>
+    <br />
+    <button onclick="loadQuiz()">Start Quiz</button>
+    <div id="quizArea"></div>
+  </div>
+</body>
+</html>
