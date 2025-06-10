@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ChampLearn - Quiz With Scoring</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      text-align: center;
+      padding: 50px;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+    h1 {
+      color: #333;
+    }
+    select, button {
+      padding: 10px;
+      margin: 10px;
+      width: 80%;
+      font-size: 16px;
+    }
+    .question {
+      text-align: left;
+      margin-top: 20px;
+    }
+  </style>
+  <script>
+    const questions = {
+      Math: {
+        "Real Numbers": [
+          { q: "What is the HCF of 18 and 24?", options: ["3", "6", "12", "2"], answer: "6" },
+          { q: "What is the LCM of 6 and 20?", options: ["30", "60", "120", "40"], answer: "60" }
+        ]
+      },
+      Science: {
+        "Life Processes": [
+          { q: "What is the function of chlorophyll?", options: ["Excretion", "Digestion", "Photosynthesis", "Respiration"], answer: "Photosynthesis" },
+          { q: "Which organ performs excretion in humans?", options: ["Heart", "Kidney", "Liver", "Lungs"], answer: "Kidney" }
+        ]
+      }
+    };
+
+    let currentQuiz = [];
+    let score = 0;
+
+    function loadChapters() {
+      const subject = document.getElementById("subject").value;
+      const chapterSelect = document.getElementById("chapter");
+      chapterSelect.innerHTML = "";
+      for (let chapter in questions[subject]) {
+        const option = document.createElement("option");
+        option.text = chapter;
+        option.value = chapter;
+        chapterSelect.appendChild(option);
+      }
+    }
+
+    function loadQuestions() {
+      const subject = document.getElementById("subject").value;
+      const chapter = document.getElementById("chapter").value;
+      const quizArea = document.getElementById("quizArea");
+      quizArea.innerHTML = "";
+      score = 0;
+      currentQuiz = questions[subject][chapter];
+
+      currentQuiz.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "question";
+        div.innerHTML = `<p>${index + 1}. ${item.q}</p>` +
+          item.options.map(opt => `<label><input type="radio" name="q${index}" value="${opt}"/> ${opt}</label><br>`).join("");
+        quizArea.appendChild(div);
+      });
+
+      quizArea.innerHTML += '<br><button onclick="submitQuiz()">Submit Quiz</button>';
+    }
+
+    function submitQuiz() {
+      currentQuiz.forEach((item, index) => {
+        const selected = document.querySelector(`input[name="q${index}"]:checked`);
+        if (selected && selected.value === item.answer) {
+          score++;
+        }
+      });
+      document.getElementById("quizArea").innerHTML = `<h2>Your Score: ${score} / ${currentQuiz.length}</h2>
+      <button onclick="loadQuestions()">Retry Quiz</button>`;
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>ChampLearn Quiz</h1>
+    <select id="subject" onchange="loadChapters()">
+      <option value="Math">Math</option>
+      <option value="Science">Science</option>
+    </select>
+    <select id="chapter"></select>
+    <br />
+    <button onclick="loadQuestions()">Start Quiz</button>
+    <div id="quizArea"></div>
+  </div>
+</body>
+</html>
